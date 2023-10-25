@@ -1,0 +1,102 @@
+.main{
+    width: 100%;
+    height:100vh;
+}
+
+.main2{
+    background-color:#0087ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:35%;
+}
+
+.main1{
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+.main2-txt{
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 80%;
+    margin-top:1rem;
+    margin-bottom: 1rem;
+}
+
+.logo-txt{
+    color: #FFF;
+font-size: 2.58444rem;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+}
+
+.main11{
+    display: flex;
+    width: 16rem;
+    justify-content: space-around;
+}
+
+.he-mail{
+    margin-top: 1rem;
+}
+
+.login{
+    background: #d96d00;
+    margin-bottom: 1rem;
+}
+
+.login:hover{
+    background-color: #d96d00ec;
+    transform: scale(.9);
+}
+
+.login{
+    margin-top: 1rem;
+    color:white;
+}
+
+.res{
+   
+    color: #0087ff;
+}
+
+.apple{
+    background:#0087ff;
+    margin-top: 1rem;
+}
+
+.google{
+    border: 0.832px solid #d96d00;
+}
+
+.for,.em{
+    color: #d96d00;
+}
+
+.ap{
+    color:white;
+}
+
+.main2-img{
+width: 80%;
+left: -30%;
+object-fit: fill;
+}
+
+.mid-img{
+object-fit: cover;
+}
+
+.apple1{
+    color: white;
+}
+
+.dont{
+    margin-top: 1rem;
+}
