@@ -51,10 +51,10 @@ line-height: normal;
     margin-bottom: 1rem;
 }
 
-.login:hover{
+/* .login:hover{
     background-color: #d96d00ec;
     transform: scale(.9);
-}
+} */
 
 .login{
     margin-top: 1rem;
