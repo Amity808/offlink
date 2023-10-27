@@ -5,13 +5,11 @@ import "../components/login.css";
 import api from "../http/axiosfetch";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 
 const Login = () => {
-  const [loginData, setloginData] = useState({
-    email: "",
-    password: ""
-  })
-
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,7 +22,8 @@ const Login = () => {
       const response = api.post("/auth/login", loginData)
       const result = await response;
 
-      console.log(result)
+      console.log(result.data.accessToken)
+      localStorage.setItem("bih", result.data.accessToken)
       setEmail("")
       setPassword("")
     } catch (err) {
@@ -64,7 +63,7 @@ const Login = () => {
             <div>
               <div>
                 <p class="wel h-[10%] lg:text-3xl md:text-4xl font-bold flex items-center">
-                  Create an account
+                  Login Your Account
                 </p>
               </div>
               <div class=" h-[10%] w-full font-medium ">
@@ -72,7 +71,7 @@ const Login = () => {
               </div>
             </div>
 
-            <form action="" method="POST">
+            <form action="" onSubmit={handleLogin}>
               <div class="he-mail w-full h-[25%]  cursor-pointer ">
                 <label class="em font-medium ">EMAIL OR USERNAME</label>
                 <input
@@ -81,6 +80,8 @@ const Login = () => {
                   name="email"
                   for="pass"
                   class="email1 w-full cursor-pointer bg-transparent border-b-2 border-black py-2 placeholder-rgba(0, 0, 0, 0.40)-500"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <div class="relative">
                   <input
@@ -89,6 +90,8 @@ const Login = () => {
                     placeholder="Password"
                     name="pass"
                     class="pass1 w-full cursor-pointer my-5 bg-transparent border-b-2 border-black py-2 placeholder-rgba(0, 0, 0, 0.40)-500"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -103,14 +106,14 @@ const Login = () => {
                 </div>
                 <div class="for cursor-pointer">FORGOT PASSWORD</div>
               </div>
-              <div class="login flex items-center justify-center font-medium  h-14 cursor-pointer">
+              <button class="login flex items-center justify-center font-medium  h-14 cursor-pointer w-[460px] max-md:w-[350px] max-sm:w-[200px]">
                 SIGN UP
-              </div>
+              </button>
             </form>
             <div class="google flex w-full h-14 justify-center items-center font-medium cursor-pointer">
-              <div class="flex justify-between items-center space-x-4">
-                <div>SIGN UP WITH GOOGLE</div>
-              </div>
+              <button>
+              SIGN IN WITH GOOGLE
+              </button>
             </div>
 
             <div class="apple flex w-full h-14 justify-center items-center font-medium cursor-pointer">
@@ -118,7 +121,7 @@ const Login = () => {
                 <div>
                   <FaApple width={24} height={24} className="" />
                 </div>
-                <div class="ap cursor-pointer">SIGN UP WITH APPLE</div>
+                <div class="ap cursor-pointer">SIGN IN WITH APPLE</div>
               </div>
             </div>
 
@@ -126,7 +129,7 @@ const Login = () => {
               {" "}
               <div>Don't have an account</div> &nbsp;
               <div class="res cursor-pointer my-2">
-                <a href="register.html">LOGIN</a>
+                <Link href="/signup">SignUp</Link>
               </div>
             </div>
           </div>

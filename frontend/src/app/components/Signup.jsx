@@ -8,6 +8,8 @@ import "../components/css/signup.css";
 import api from "../http/axiosfetch";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { sendEmailVerifcation } from "../http/authentication";
+import Link from "next/link";
 const Signup = () => {
   const router = useRouter()
   const [formData, setFormData] = useState({
@@ -17,27 +19,33 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const isFormFilled = email && password
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newRegister = { email: email, password: password };
 
     // send data to API route of login
+    const res = api.post("/auth/register/", newRegister);
     try {
-      const res = api.post("/auth/register/", newRegister);
       const result = await res;
 
       console.log(result);
+      const emailSend = { email: newRegister.email}
+      await sendEmailVerifcation(emailSend)
+      // return verify
       setEmail("")
       setPassword("")
+      
       toast.success(
         result.data.message
       )
       router.push("/")
-      const sendVerification = api.post("/auth/send-password-resetlink/", newRegister.email)
-      const isSent = await sendVerification;
-      console.log(isSent)
+      
     } catch (error) {
-      console.log(`Error ${error.message}`)
+      toast.error("User Already Registered.")
+      
+      console.log(`Error ${error}`)
     }
   };
 
@@ -106,7 +114,7 @@ const Signup = () => {
               </div>
               <div class="for cursor-pointer">FORGOT PASSWORD</div>
             </div>
-            <button class="login flex items-center justify-center font-medium  h-14 cursor-pointer">
+            <button class="login flex items-center justify-center font-medium  h-14 cursor-pointer" disabled={!isFormFilled}>
               SIGN UP
             </button>
             {/* </form> */}
@@ -131,7 +139,7 @@ const Signup = () => {
               {" "}
               <div>Don't have an account</div> &nbsp;
               <div class="res cursor-pointer my-2">
-                <a href="register.html">LOGIN</a>
+                <Link href="/login">Login</Link>
               </div>
             </div>
           </form>
