@@ -24,6 +24,7 @@ const Login = () => {
 
       console.log(result.data.accessToken)
       localStorage.setItem("bih", result.data.accessToken)
+      router.push("/")
       setEmail("")
       setPassword("")
     } catch (err) {

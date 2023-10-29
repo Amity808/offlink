@@ -1,3 +1,4 @@
+import { headers } from "../../../next.config";
 import api from "./axiosfetch"
 import { toast } from "react-toastify"
 
@@ -25,4 +26,24 @@ export const loginUser = async (loginData) => {
     } catch (error) {
         
     }
+}
+
+export const updateProfile = async (token) => {
+
+        try {
+            const response = api.get("/auth/user-profile", 
+            {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  Authorization: `Bearer ${token}`
+                }
+                
+              })
+            const result = await response;
+            console.log(result)
+            return result;
+        } catch (error) {
+            console.log(error)
+        }
+    
 }
