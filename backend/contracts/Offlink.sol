@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/cryptography/ECDSA.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/AccessControl.sol";
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+// import ""
 
 contract OffLink is AccessControl {
     bytes32 public constant MANAGER_ROLE = keccak256("MANAGER_ROLE");
@@ -12,11 +13,16 @@ contract OffLink is AccessControl {
 
     using ECDSA for bytes32;
 
-    uint256 public orderCounter;
-
     address _feeCollectorAddress;
     uint256 _feeDecimal = 10000;
+    uint256 _fee;
 
+    enum _TransactionState {
+        PENDING,
+        ACCEPTED,
+        CANCELLED,
+        COMPLETED
+     }
 
     struct TokenConfig {
         bool status;
@@ -36,18 +42,22 @@ contract OffLink is AccessControl {
     mapping(bytes32 => CurrencyConfig) private _allowedCurrencies;
 
     struct Order {
+        _TransactionState txStatus;
+        uint256 nonce;
         address seller;
         address buyer;
         address token;
         bytes32 currency;
         uint256 amountInToken;
         uint256 amountInCurrency;
-        bool locked;
     }
 
-    mapping(uint256 => Order) public orders;
+    mapping(uint256 => Order) public _orders;
+    mapping(bytes => bool) public _ordersSignatures;
+    uint256 public _ordersCount;
 
     event SellOrderPlaced(
+        uint256 nonce,
         uint256 indexed orderId,
         address seller,
         address token,
@@ -62,11 +72,12 @@ contract OffLink is AccessControl {
 
     event OrderCancelled(uint256 indexed orderId, address seller, uint256 amount);
 
-    constructor(address feeCollectorAddress) {
+    constructor(address feeCollectorAddress, uint256 fee) {
         _setRoleAdmin(BUYER_ROLE, DEFAULT_ADMIN_ROLE);
         _setRoleAdmin(MANAGER_ROLE, DEFAULT_ADMIN_ROLE);
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _feeCollectorAddress = feeCollectorAddress;
+        changeFee(fee);
     }
 
     modifier onlyManager() {
@@ -85,64 +96,70 @@ contract OffLink is AccessControl {
     }
 
     modifier onlySeller(uint256 orderID) {
-        require(orders[orderID].seller == msg.sender, "Only order seller can call this function");
+        require(_orders[orderID].seller == msg.sender, "Only order seller can call this function");
         _;
     }
 
     function placeSellOrder(
+        uint256 nonce,
         uint256 amountInToken,
         uint256 amountInCurrency,
         bytes32 currency,
         address token,
         bytes memory signature
     ) external {
+        require(!_ordersSignatures[signature], "Duplicate order");
         require(_allowedTokens[token].status, "Invalid token");
         require(amountInToken > _allowedTokens[token].minOrder && amountInToken < _allowedTokens[token].maxOrder, "Invalid token amount");
 
         require(_allowedCurrencies[currency].status, "Invalid currency");
         require(amountInCurrency > _allowedCurrencies[currency].minOrder && amountInCurrency < _allowedCurrencies[currency].maxOrder, "Invalid currency amount");
 
-        require(verifySignerSignature(amountInToken, amountInCurrency, currency, token, signature), "Invalid signature");
+        require(verifySignerSignature(nonce, amountInToken, amountInCurrency, currency, token, signature), "Invalid signature");
         require(IERC20(token).transferFrom(msg.sender, address(this), amountInToken), "Token transfer failed");
 
-        Order storage order = orders[orderCounter];
+        _ordersSignatures[signature] = true;
+
+        Order storage order = _orders[_ordersCount];
         order.seller = msg.sender;
         order.token = token;
         order.currency = currency;
         order.amountInToken = amountInToken;
         order.amountInCurrency = amountInCurrency;
-        order.locked = false;
 
-        emit SellOrderPlaced(orderCounter, msg.sender, token, currency, amountInToken, amountInCurrency);
+        emit SellOrderPlaced(nonce, _ordersCount, msg.sender, token, currency, amountInToken, amountInCurrency);
 
-        orderCounter++;
+        _ordersCount++;
     }
 
     function acceptOrder(uint256 orderId) external onlyRole(BUYER_ROLE) {
-        Order storage order = orders[orderId];
-        require(!order.locked, "Order already accepted");
+        Order storage order = _orders[orderId];
+        require(order.txStatus == _TransactionState.PENDING, "order is not pending");
         order.buyer = msg.sender;
-        order.locked = true;
+        order.txStatus = _TransactionState.ACCEPTED;
 
         emit OrderAccepted(orderId, msg.sender);
     }
+    function _calculateFee(uint256 amount) internal view returns (uint256) {
+        return (amount * _fee) / _feeDecimal;
+    }
 
     function releaseFunds(uint256 orderId) external onlySeller(orderId) {
-        Order storage order = orders[orderId];
-        require(order.locked, "Order not locked");
+        Order storage order = _orders[orderId];
+        require(order.txStatus == _TransactionState.ACCEPTED, "Order is not accepted");
         require(IERC20(order.token).transfer(order.buyer, order.amountInToken), "Token transfer to buyer failed");
         
-        uint256 adminFee = order.amountInToken * _allowedTokens[order.token].fee / _feeDecimal;
-        require(IERC20(order.token).transfer(_feeCollectorAddress, adminFee), "Fee transfer failed");
+        uint256 adminFee = _calculateFee(order.amountInCurrency);
+        require(IERC20(order.token).transfer(_feeCollectorAddress, order.amountInCurrency - adminFee), "Fee transfer failed");
 
         emit FundsReleased(orderId, order.seller, order.amountInToken);
 
-        order.locked = false;
+        
     }
 
     function adminReleaseFunds(uint256 orderId) external onlyManager {
-        Order storage order = orders[orderId];
-        require(order.locked, "Order not locked");
+        Order storage order = _orders[orderId];
+        require(order.txStatus == _TransactionState.ACCEPTED, "Order must be accepted");
         require(IERC20(order.token).transfer(order.buyer, order.amountInToken), "Token refund to buyer failed");
 
         uint256 adminFee = order.amountInToken * _allowedTokens[order.token].fee / _feeDecimal;
@@ -150,36 +167,39 @@ contract OffLink is AccessControl {
 
         emit FundsReleased(orderId, order.buyer, order.amountInToken);
 
-        order.locked = false;
+        order.txStatus = _TransactionState.COMPLETED;
     }
 
     function adminRefundFunds(uint256 orderId) external onlyManager {
-        Order storage order = orders[orderId];
-        require(order.locked, "Order not locked");
+        Order storage order = _orders[orderId];
+        require(order.txStatus == _TransactionState.ACCEPTED, "order is not accepted");
         emit FundsReleased(orderId, order.seller, order.amountInToken); // Refund without transferring tokens
-        order.locked = false;
+        order.txStatus = _TransactionState.COMPLETED;
     }
 
 
     function cancelOrder(uint256 orderId) external onlySeller(orderId) {
-        Order storage order = orders[orderId];
-        require(!order.locked, "Order is locked");
+        Order storage order = _orders[orderId];
+        require(order.txStatus == _TransactionState.ACCEPTED, "order is not accepted");
         require(IERC20(order.token).transfer(order.seller, order.amountInToken), "Token refund to buyer failed");
+        order.txStatus = _TransactionState.CANCELLED;
 
-        delete orders[orderId];
+        delete _orders[orderId];
+
         emit OrderCancelled(orderId, order.seller, order.amountInToken); // Refund without transferring tokens
     }
 
     function cancelOrderAdmin(uint256 orderId) external onlyManager {
-        Order storage order = orders[orderId];
-        require(!order.locked, "Order is locked");
+        Order storage order = _orders[orderId];
+        require(order.txStatus == _TransactionState.ACCEPTED, "order is not accepted");
         require(IERC20(order.token).transfer(order.seller, order.amountInToken), "Token refund to buyer failed");
-
-        delete orders[orderId];
+         order.txStatus = _TransactionState.CANCELLED;
+        delete _orders[orderId];
         emit OrderCancelled(orderId, order.seller, order.amountInToken); // Refund without transferring tokens
     }
 
     function verifySignerSignature(
+        uint256 nonce,
         uint256 amountInToken,
         uint256 amountInCurrency,
         bytes32 currency,
@@ -188,6 +208,7 @@ contract OffLink is AccessControl {
     ) public view returns (bool) {
         bytes32 messageHash = keccak256(
             abi.encodePacked(
+                nonce,
                 amountInToken,
                 amountInCurrency,
                 currency,
@@ -250,5 +271,8 @@ contract OffLink is AccessControl {
     function removeCurrency(bytes32 currency) external onlyAdmin {
         require(_allowedCurrencies[currency].status, "Currency does not exist");
         delete _allowedCurrencies[currency];
+    }
+    function changeFee(uint256 fee) public onlyAdmin {
+        _fee = fee;
     }
 }

@@ -8,6 +8,8 @@ import { useDebounce } from "use-debounce";
 import { useAccount } from "wagmi";
 import { userOrder } from "../http/offlickdata";
 import { nairapricefeed } from "../http/offlickdata";
+import { useContractSendWrite } from "../hooks/useContractWrite";
+import { useContractCall } from "../hooks/useContractRead";
 import api from "../http/axiosfetch"
 const PlaceOrder = () => {
   const { address } = useAccount()
@@ -15,18 +17,9 @@ const PlaceOrder = () => {
   const [depositAmount, setDepositAmount] = useState(0);
   // const [cryptocurrency, setCryptocurrency] = useState("");
   const [fiatCurrency, setFiatCurrency] = useState("");
+  const [signature, setSignature] = useState("")
   const [conversionRate, setConversionRate] = useState(0)
   // const tokenAddress = '0x874069fa1eb16d44d622f2e0ca25eea172369bc1'
-//   {
-//     "token_amount": 5,
-//     "cryptocurrency": "0x874069fa1eb16d44d622f2e0ca25eea172369bc1",
-//     "fiat_currency": "NGN",
-//     "fiat_amount":6000
-// }
-
-  
-
-
 
 useEffect(() => {
     const curencData = async () => {
@@ -50,6 +43,19 @@ useEffect(() => {
     fiat_currency: fiatCurrency,
     fiat_amount: coinValue
   }
+
+  const { data } = useContractCall("MANAGER_ROLE", [], true)
+
+  // const orderlen = Number(data.toString()) 
+
+  console.log(data)
+  // uint256 nonce,
+  //       uint256 amountInToken,
+  //       uint256 amountInCurrency,
+  //       bytes32 currency,
+  //       address token,
+  //       bytes memory signature
+  const [ deBounceAmount ] = useDebounce(depositAmount, 500)
 
   const token = localStorage.getItem('bih')
   
@@ -82,7 +88,7 @@ useEffect(() => {
                 htmlFor=""
                 className=" font-semibold text-[18px] mb-[10px]"
               >
-                Convert your coin to fiat
+                Convert your stable coin  to fiat  {coinValue}
               </label>
               <input
                 type="number"
