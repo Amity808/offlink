@@ -1,9 +1,12 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import UpdateProfile from "../components/modal/UpdateProfile";
+import AuthWrapper from "../http/AuthWraper";
 const UpdateProfiles = () => {
   return (
     <>
+    <AuthWrapper>
+
       <Navbar />
       <div className=" flex flex-col gap-3 my-[30px]">
         <>
@@ -33,6 +36,7 @@ const UpdateProfiles = () => {
           </span>
         </div>
       </div>
+    </AuthWrapper>
     </>
   );
 };

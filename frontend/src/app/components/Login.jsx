@@ -44,12 +44,12 @@ const Login = () => {
         <div
           class="main1 md:w-[30%] lg:w-[40%] w-full 
          md:flex md:flex-row lg:flex-row md:items-center
-         md:justify-center lg:items-center lg:justify-center lg:flex"
+         md:justify-center lg:items-center lg:justify-center lg:flex max-sm:hidden"
         >
           <div
             class="main11 lg:space-x-4 md:space-x-2 space-x-2
            w-full lg:flex lg:items-center lg:justify-center md:flex
-            md:items-center md:justify-center"
+            md:items-center md:justify-center "
           >
             <img src="/img/Group1.png" alt="logo img" />
             <h1 class="logo-txt md:text-3xl lg:text-4xl flex items-center">
@@ -59,11 +59,14 @@ const Login = () => {
         </div>
         {/* <!--main1 ends--> */}
 
-        <div class="main2 flex items-center justify-center lg:w-[60%] md:w-[70%] w-full mt-auto mb-auto lg:h-full md:h-full">
+        <div class="main2 flex items-center justify-center lg:w-[60%] md:w-[70%] w-full max-sm:mx-auto">
           <div class="main2-txt md:w-[85%] lg:w-[50%]">
             <div>
               <div>
-                <p class="wel h-[10%] lg:text-3xl md:text-4xl font-bold flex items-center">
+                <p class="wel h-[10%] lg:text-5xl md:text-4xl font-bold flex items-center lg:hidden md:hidden sm:block max-sm:mt-[30px]">
+                  OFFLINK
+                </p>
+                <p class="wel h-[10%] lg:text-3xl md:text-2xl font-semibold flex items-center">
                   Login Your Account
                 </p>
               </div>
@@ -107,7 +110,7 @@ const Login = () => {
                 </div>
                 <div class="for cursor-pointer">FORGOT PASSWORD</div>
               </div>
-              <button class="login flex items-center justify-center font-medium  h-14 cursor-pointer w-[460px] max-md:w-[350px] max-sm:w-[200px]">
+              <button class="flex w-full h-14 justify-center items-center font-medium cursor-pointer login">
                 SIGN UP
               </button>
             </form>

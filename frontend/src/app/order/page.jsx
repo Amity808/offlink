@@ -3,8 +3,12 @@ import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Image from 'next/image'
 import ladyjpeg from "../../../public/img/lady.jpeg"
+import { toast } from 'react-toastify'
+import { useDebounce } from 'use-debounce'
 const PlaceOrder = () => {
     const [depositAmount, setDepositAmount] = useState(0)
+    const tokenAddress = '0x874069fa1eb16d44d622f2e0ca25eea172369bc1'
+
   return (
     <div>
       <Navbar />

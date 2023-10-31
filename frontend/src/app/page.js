@@ -11,8 +11,18 @@ import { useConnect, useAccount } from "wagmi";
 import Listing from "./components/Listing";
 import { InjectedConnector } from "wagmi/connectors/injected"
 import Navbar from "./components/Navbar";
+import { io } from "socket.io-client";
+import WebSocket from 'ws';
 
+
+// const socket = io.connect("wss://alfajores-forno.celo-testnet.org/ws");
+
+// socket.on('connect', () => {
+//   // Socket is connected
+//   console.log('Connected to the WebSocket server');
+// });
 export default function Home() {
+
   const router = useRouter();
   const token = localStorage.getItem("bih");
   const [fetchedData, setFetchedData] = useState([])
@@ -31,6 +41,24 @@ export default function Home() {
     return result;
    
   }
+  const connectorWs = () => {
+    const ws = new window.WebSocket('ws://16.16.185.83:80');
+    // console.log(ws)
+    ws.onopen = function() {
+      console.log('WebSocket connection opened');
+    };
+  
+    // ws.on('message', (message) => {
+    //   console.log(JSON.parse(message));
+    //   if (message.type == 'offerpoolUpdate'){
+    //       console.log("New transaction listed ==> ", message.data)
+    //   };
+  
+    //   if (message.type == 'offerpoolUpdate'){
+    //       console.log("A transaction state has mutated ==> ", message.data)
+    //   };
+    // });
+  };
 
   useEffect(() => {
     const loginToken = localStorage.getItem("bih");
@@ -38,9 +66,11 @@ export default function Home() {
     if (!loginToken) {
       router.push("/login");
     }
-    getDetails();
+    connectorWs()
+    
   }, []);
 
+ 
   return (
     <>
       <div className="flex justify-between items-center h-[10vh] font-bold space-x-2 w-30 px-16 ">
