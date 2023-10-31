@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { sendEmailVerifcation } from "../http/authentication";
 import Link from "next/link";
 const Signup = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,7 +19,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const isFormFilled = email && password
+  const isFormFilled = email && password;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,25 +31,20 @@ const Signup = () => {
       const result = await res;
 
       console.log(result);
-      const emailSend = { email: newRegister.email}
-      await sendEmailVerifcation(emailSend)
+      const emailSend = { email: newRegister.email };
+      await sendEmailVerifcation(emailSend);
       // return verify
-      setEmail("")
-      setPassword("")
-      
-      toast.success(
-        result.data.message
-      )
-      router.push("/")
-      
+      setEmail("");
+      setPassword("");
+
+      toast.success(result.data.message);
+      router.push("/");
     } catch (error) {
-      toast.error("User Already Registered.")
-      
-      console.log(`Error ${error}`)
+      toast.error("User Already Registered.");
+
+      console.log(`Error ${error}`);
     }
   };
-
-  
 
   const canSave = [...Object.values(formData)].every(Boolean);
 
@@ -61,7 +56,7 @@ const Signup = () => {
             <Image
               src={logo}
               alt="offlink"
-              class="logo-img "
+              className="logo-img"
               width={24}
               height={24}
             />
@@ -114,7 +109,10 @@ const Signup = () => {
               </div>
               <div class="for cursor-pointer">FORGOT PASSWORD</div>
             </div>
-            <button class="login flex items-center justify-center font-medium  h-14 cursor-pointer" disabled={!isFormFilled}>
+            <button
+              class="login flex items-center justify-center font-medium  h-14 cursor-pointer"
+              disabled={!isFormFilled}
+            >
               SIGN UP
             </button>
             {/* </form> */}
@@ -145,12 +143,12 @@ const Signup = () => {
           </form>
         </div>
 
-        <div class="main2 relative justify-center  md:flex md:items-center lg:flex lg:items-center">
-          <div class="main2-img absolute h-full md:h-[40%] lg:h-[60%] md:justify-self-center md:left-[0%] lg:left-[-30%] md:w-full">
+        <div className="relative flex justify-center items-center w-[35%] bg-[#0087ff] md:flex max-sm:hidden md:items-center lg:flex lg:items-center">
+          <div className="main2-img absolute h-full md:h-[40%] lg:h-[60%] md:justify-self-center md:left-[0%] lg:left-[-30%] md:w-full">
             <Image
               src={coinImg}
               alt=""
-              class="mid-img flex md:w-100%] md:justify-self-center h-full "
+              className="mid-img flex md:w-100%] md:justify-self-center h-full "
             />
           </div>
         </div>

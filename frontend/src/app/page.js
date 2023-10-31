@@ -25,7 +25,6 @@ export default function Home() {
 
   const router = useRouter();
   const token = localStorage.getItem("bih");
-  const [fetchedData, setFetchedData] = useState([])
   const { address } = useAccount()
 
   const { connect } = useConnect({
@@ -33,14 +32,7 @@ export default function Home() {
   })
 
   
-  const getDetails = async () => {
-    const fetchData = await updateProfile(token)
-    const result = await fetchData.data;
-    console.log(result)
-    setFetchedData(result)
-    return result;
-   
-  }
+  
   const connectorWs = () => {
     const ws = new window.WebSocket('ws://16.16.185.83:80');
     // console.log(ws)

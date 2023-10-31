@@ -111,12 +111,12 @@ const Login = () => {
                 <div class="for cursor-pointer">FORGOT PASSWORD</div>
               </div>
               <button class="flex w-full h-14 justify-center items-center font-medium cursor-pointer login">
-                SIGN UP
+                Login UP
               </button>
             </form>
             <div class="google flex w-full h-14 justify-center items-center font-medium cursor-pointer">
               <button>
-              SIGN IN WITH GOOGLE
+              Login IN WITH GOOGLE
               </button>
             </div>
 
