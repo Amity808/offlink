@@ -1,4 +1,4 @@
-import { headers } from "../../../next.config";
+
 import api from "./axiosfetch"
 import { toast } from "react-toastify"
 
@@ -19,7 +19,11 @@ export const sendEmailVerifcation = async (userEmail) => {
 
 export const loginUser = async (loginData) => {
     try {
-        const response = api.post("/auth/login", loginData)
+        const response = api.post("/auth/login", loginData, {
+            headers: {
+                'Content-Type': "application/json"
+            }
+        })
         const result = await response;
         return result;
         
@@ -28,7 +32,7 @@ export const loginUser = async (loginData) => {
     }
 }
 
-export const updateProfile = async (token) => {
+export const getProfile = async (token) => {
 
         try {
             const response = api.get("/auth/user-profile", 

@@ -11,9 +11,10 @@ const AuthWrapper = ({ children }) => {
     })
   useEffect(() => {
     const loginToken = localStorage.getItem("bih");
-    connect();
     if (!loginToken) {
       router.push("/login");
+    } else{
+      connect();
     }
   }, []);
 
