@@ -51,7 +51,7 @@ const Signup = () => {
   return (
     <>
       <div class="main flex md:flex lg:flex	lg:w-full lg:min-h-screen md:min-h-screen md:w-full">
-        <div class="main1 flex  justify-center h-full flex-col w-full md:w-[65%] lg:w-[65%]">
+        <div class=" flex justify-center max-sm: h-full flex-col w-full md:w-[65%] lg:w-[65%] max-sm:mt-[50px]">
           <div class="flex items-center h-10 font-bold space-x-2 w-30 px-16">
             <Image
               src={logo}
@@ -60,33 +60,32 @@ const Signup = () => {
               width={24}
               height={24}
             />
-            <div class="off text-2xl text-black">OFFLINK</div>
+            <div class="off text-2xl text-black ">OFFLINK</div>
           </div>
           <form
-            class="main2-txt md:w-[85%] lg:w-[50%] flex flex-col ml-auto	mr-auto mt-auto mb-auto lg:h-[80%] w-[82%]"
+            className=" md:w-[85%] lg:w-[50%] flex flex-col ml-auto	mr-auto my-auto w-[82%] sm:w-[90%] max-sm:mt-[65px]"
             onSubmit={handleSubmit}
           >
             {/* <!-- henry- --> */}
             <div>
-              <div>
-                <p class="wel h-[10%] lg:text-3xl md:text-4xl font-bold flex items-center">
-                  Create an account
+              <div className="">
+                <p className="wel h-[10%] lg:text-3xl md:text-4xl font-bold flex items-center">
+                  Create an account 
                 </p>
-              </div>
-              <div class=" h-[10%] w-full font-medium ">
-                Start with our 30 day free trial.
+                <span className=" flex flex-row gap-2 text-base font-bold">
+                <p>Already have an account </p>
+                  <Link href="/login" className=" text-[#d96d00]">Login</Link>
+                </span>
               </div>
             </div>
-            {/* form */}
-            {/* <form action="" method="" onSubmit={handleSubmit}> */}
-            <div class="he-mail w-full h-[25%]  cursor-pointer ">
-              <div class="em font-medium ">EMAIL OR USERNAME</div>
+            <div className="he-mail flex flex-col gap-6 max-md:gap-4  cursor-pointer max-sm:gap-10">
+              <div className="em font-medium ">EMAIL OR USERNAME</div>
               <input
                 type="email"
                 placeholder="offlink@gmail.com"
                 name="email"
                 for="pass"
-                class="email1 w-full cursor-pointer bg-transparent border-b-2 border-black py-2 placeholder-rgba(0, 0, 0, 0.40)-500"
+                className="email1 w-full cursor-pointer bg-transparent border-b-2 border-black py-2 placeholder-rgba(0, 0, 0, 0.40)-500 p-3"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -96,50 +95,20 @@ const Signup = () => {
                   for="password"
                   placeholder="Password"
                   name="password"
-                  class="pass1 w-full cursor-pointer my-5 bg-transparent border-b-2 border-black py-2 placeholder-rgba(0, 0, 0, 0.40)-500"
+                  class="pass1 w-full cursor-pointer my-5 bg-transparent border-b-2 border-black py-2 placeholder-rgba(0, 0, 0, 0.40)-500 p-3"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
             </div>
-            <div class="rem flex space-x-0  items-center justify-between font-medium  h-[10%]">
-              <div class="flex items-center  space-x-3">
-                <input type="checkbox" class="checkb w-6 h-6 cursor-pointer" />
-                <div>Remember me</div>
-              </div>
-              <div class="for cursor-pointer">FORGOT PASSWORD</div>
+            <div class="rem flex space-x-0  items-center justify-between font-medium ">
+              <button className="for cursor-pointer">FORGOT PASSWORD</button>
             </div>
             <button
-              class="login flex items-center justify-center font-medium  h-14 cursor-pointer"
-              disabled={!isFormFilled}
+              className="login flex items-center justify-center font-medium  h-14 cursor-pointer" type="submit"
             >
               SIGN UP
             </button>
-            {/* </form> */}
-            {/* <!-- <div class='flex w-full h-14 justify-center items-center font-medium'>OR</div> --> */}
-            <div class="google flex w-full h-14 justify-center items-center font-medium cursor-pointer">
-              <div class="flex justify-between items-center space-x-4">
-                {/* <!-- <div><ion-icon name="logo-google" class="google"></ion-icon></div> --> */}
-                <div>SIGN UP WITH GOOGLE</div>
-              </div>
-            </div>
-
-            <div class="apple flex w-full h-14 justify-center items-center font-medium cursor-pointer">
-              <div class="flex justify-between items-center  space-x-4">
-                <div>
-                  <FaApple width={24} height={24} className="" />
-                </div>
-                <div class="ap cursor-pointer">SIGN UP WITH APPLE</div>
-              </div>
-            </div>
-
-            <div class="dont flex  w-full h-8 items-center font-medium">
-              {" "}
-              <div>Don't have an account</div> &nbsp;
-              <div class="res cursor-pointer my-2">
-                <Link href="/login">Login</Link>
-              </div>
-            </div>
           </form>
         </div>
 

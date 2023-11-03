@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from 'next/image';
 import logo2 from "../../../public/img/offlinkLogo.png";
+import Link from 'next/link';
 const Navbar = () => {
   return (
     <>
@@ -13,7 +14,11 @@ const Navbar = () => {
             height={24}
             class="logo-img h-6 w-6"
           />
-          <div className="off text-2xl text-black">OFFLINK</div>
+          <div className="off text-2xl text-black">
+            <Link href="/">
+            OFFLINK
+            </Link>
+          </div>
         </div>
         
       </div>

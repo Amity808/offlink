@@ -70,9 +70,6 @@ const Login = () => {
                   Login Your Account
                 </p>
               </div>
-              <div class=" h-[10%] w-full font-medium ">
-                Start with our 30 day free trial.
-              </div>
             </div>
 
             <form action="" onSubmit={handleLogin}>
@@ -101,33 +98,12 @@ const Login = () => {
               </div>
 
               <div class="rem flex space-x-0  items-center justify-between font-medium  h-[10%]">
-                <div class="flex items-center  space-x-3">
-                  <input
-                    type="checkbox"
-                    class="checkb w-6 h-6 cursor-pointer"
-                  />
-                  <div>Remember me</div>
-                </div>
-                <div class="for cursor-pointer">FORGOT PASSWORD</div>
+                {/* <div class="for cursor-pointer">FORGOT PASSWORD</div> */}
               </div>
               <button class="flex w-full h-14 justify-center items-center font-medium cursor-pointer login">
-                Login UP
+                Login
               </button>
             </form>
-            <div class="google flex w-full h-14 justify-center items-center font-medium cursor-pointer">
-              <button>
-              Login IN WITH GOOGLE
-              </button>
-            </div>
-
-            <div class="apple flex w-full h-14 justify-center items-center font-medium cursor-pointer">
-              <div class="flex justify-between items-center  gap-4">
-                <div>
-                  <FaApple width={24} height={24} className="" />
-                </div>
-                <div class="ap cursor-pointer">SIGN IN WITH APPLE</div>
-              </div>
-            </div>
 
             <div class="dont flex  w-full h-8 items-center font-medium">
               {" "}

@@ -1,17 +1,4 @@
-'use client'
-import React,  { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { InjectedConnector} from "wagmi/connectors/injected"
-import { useConnect } from 'wagmi';
-
-const AuthWrapper = ({ children }) => {
-  const router = useRouter();
-    const { connect } = useConnect({
-        connector: new InjectedConnector()
-    })
-
-    const connectorWs = () => {
-      // Replace 'wss://example.com/socket' with your WebSocket server URL.
+// Replace 'wss://example.com/socket' with your WebSocket server URL.
 const socket = new WebSocket('ws://16.16.185.83:80');
 
 // Connection opened
@@ -44,24 +31,3 @@ socket.addEventListener('error', (event) => {
 
 // You can also send messages using the 'send' method.
 // socket.send('Hello, WebSocket server!');
-    
-     
-    };
-
-    
-  
-  useEffect(() => {
-    const loginToken = localStorage.getItem("bih");
-    if (!loginToken) {
-      router.push("/login");
-    } else{
-      connect();
-    }
-
-    connectorWs()
-  }, []);
-
-  return children;
-};
-
-export default AuthWrapper;

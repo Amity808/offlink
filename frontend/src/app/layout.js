@@ -88,6 +88,7 @@ export default function RootLayout({ children }) {
             {children}
           </RainbowKitProvider>
         </WagmiConfig>
+        
       </body>
     </html>
   );

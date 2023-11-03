@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Image from "next/image";
-import ladyjpeg from "../../../public/img/lady.jpeg";
+import Link from "next/link";
+import newSVg from "../UI/new.svg"
+import { truuncateAddress } from "../components/helper/truncateAddress";
 import { toast } from "react-toastify";
 import { useDebounce } from "use-debounce";
 import { useAccount } from "wagmi";
@@ -12,10 +14,10 @@ import { useContractSendWrite } from "../hooks/useContractWrite";
 import AuthWrapper from "../http/AuthWraper";
 import { useContractCall } from "../hooks/useContractRead";
 import { useContractTrans } from "../hooks/useContractTrans";
-import api from "../http/axiosfetch"
-import { ethers } from "ethers";
+import UserOrders from "./components/UserOrders";
 import { parseEther } from "ethers/lib/utils";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { identiconTemplate } from "../components/helper";
 
 
 const PlaceOrder = () => {
@@ -79,12 +81,6 @@ useEffect(() => {
       console.log(err)
     }
   }
-//   0: 4
-// 1: 1
-// 2: 788
-// 3: "0x4e49470000000000000000000000000000000000000000000000000000000000"
-// 4: "0xaa7311851643FC4033dfC94D6D82a226cB2579cE"
-// 5: "0x6890edec61df04d46676a7e9eebde27a2d7a8fd5fd0bdc4dd1bb131084b08063651e25506965b3d3e9f5cd03f6cf5a2339adeef12c389853818a347964277bab1c"
 
   const [ deBounceNonce ] = useDebounce(blockData?.[0], 500) 
   const [ deBounceTokenAmount ] = useDebounce(blockData?.[1], 500) 
@@ -115,19 +111,20 @@ useEffect(() => {
   ])
 
   const handlePlaceOrder = async () => {
+
+    
     if(!approve) {
       throw ("Failed to place order")
     }
     const approveTx = await approve()
 
-    await approveTx.wait()
-
-    if(!record) throw "Failed to confirm order"
+    await approveTx
+    if(!placeNewOrder) throw new "Failed to confirm order"
     setLoading("Placing Order");
 
     const transactTx = await placeNewOrder();
     setLoading("Waiting for confirmation")
-    await transactTx.wait();
+    await transactTx
   }
 
   const transferToken = async () => {
@@ -144,7 +141,8 @@ useEffect(() => {
         error: "Error with payment"
       })
     } catch (err) {
-      console.log({ err })
+      console.log( err?.message )
+      toast.error(err?.message)
     }
   }
   
@@ -153,13 +151,16 @@ useEffect(() => {
    <AuthWrapper>
      <div>
       <Navbar />
-      <div className=" flex flex-col justify-center items-center">
-        <Image src={ladyjpeg} className=" w-[100px] h-[100px] rounded-full" />
+      <div className=" flex flex-col justify-center items-center my-auto">
+        {/* <Image src={ladyjpeg} className=" w-[100px] h-[100px] rounded-full" /> */}
+        {identiconTemplate(address, 15)}
         <span className=" mt-[30px]">
-          <p>Address</p>
+          <p>{truuncateAddress(address)}</p>
         </span>
-        <form action="" className=" mt-[100px]" onSubmit={handleOrder}>
-          <div className=" flex flex-col gap-2">
+
+        {!blockData? (<div>
+          <form className=" mt-[100px]" onSubmit={handleOrder}>
+          <div className=" flex flex-col gap-2 justify-center">
             <span className="flex flex-col">
               <label
                 htmlFor=""
@@ -171,14 +172,14 @@ useEffect(() => {
                 type="number"
                 onChange={(e) => setDepositAmount(e.target.value)}
                 placeholder="Enter Amount"
-                className=" w-[360px] h-[40px] border-2 border-black p-2"
+                className=" w-[360px] h-[40px] border-2 border-black p-2 rounded-lg"
               />
             </span>
             
             <span className=" flex flex-col">
               <label
                 htmlFor=""
-                className=" font-semibold text-[18px] mb-[10px]"
+                className=" font-semibold text-[18px] mb-[10px] rounded-lg "
               >
                 Currency
               </label>
@@ -186,20 +187,32 @@ useEffect(() => {
                 type="text"
                 onChange={(e) => setFiatCurrency(e.target.value)}
                 placeholder="E.g NIG"
-                className=" w-[360px] h-[40px] border-2 border-black p-2"
+                className=" w-[360px] h-[40px] border-2 border-black p-2 rounded-lg "
               />
             </span>
           </div>
-          <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold">
+          <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold text-white">
             Convert
           </button>
         </form>
-        <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold" onClick={transferToken}>
-            Convert
+        </div>): <div className=" flex justify-center items-center flex-col">
+          <span className="">
+            <Image src={newSVg} className=" w-[200px] h-[200px] mt-[40px]" />
+          </span>
+
+          <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold text-white" onClick={transferToken}>
+            Make Payment
           </button>
-        <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold" onClick={approve} disabled={!blockData}>
+          </div>}
+        
+          <Link href={`/${orderlen}`}>Order</Link>
+        {/* <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold" onClick={approve} disabled={!blockData}>
             FUnd
-          </button>
+          </button> */}
+          
+          
+          {/* <Spin /> */}
+          <UserOrders />
       </div>
     </div>
    </AuthWrapper>

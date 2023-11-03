@@ -1,69 +1,27 @@
 "use client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import logo2 from "../../public/img/offlinkLogo.png";
 import eth from "../../public/img/eth.png";
 import UpdateProfile from "./components/modal/UpdateProfile";
 import eyes from "../../public/img/eyes.svg";
-import { updateProfile } from "./http/authentication";
 import { useConnect, useAccount } from "wagmi";
 import Listing from "./components/Listing";
-import { InjectedConnector } from "wagmi/connectors/injected"
 import Navbar from "./components/Navbar";
 import { io } from "socket.io-client";
 import AuthWrapper from "./http/AuthWraper";
 import WebSocket from 'ws';
 
+import Orders from "./components/Orders";
 
-// const socket = io.connect("wss://alfajores-forno.celo-testnet.org/ws");
-
-// socket.on('connect', () => {
-//   // Socket is connected
-//   console.log('Connected to the WebSocket server');
-// });
 export default function Home() {
 
   const router = useRouter();
-  const token = localStorage.getItem("bih");
   const { address } = useAccount()
-
-  const { connect } = useConnect({
-    connector: new InjectedConnector()
-  })
+  
 
   
-  
-  const connectorWs = () => {
-    const ws = new window.WebSocket('ws://16.16.185.83:80');
-    // console.log(ws)
-    ws.onopen = function() {
-      console.log('WebSocket connection opened');
-    };
-  
-    // ws.on('message', (message) => {
-    //   console.log(JSON.parse(message));
-    //   if (message.type == 'offerpoolUpdate'){
-    //       console.log("New transaction listed ==> ", message.data)
-    //   };
-  
-    //   if (message.type == 'offerpoolUpdate'){
-    //       console.log("A transaction state has mutated ==> ", message.data)
-    //   };
-    // });
-  };
-
-  useEffect(() => {
-    const loginToken = localStorage.getItem("bih");
-    connect()
-    if (!loginToken) {
-      router.push("/login");
-    }
-    connectorWs()
-    
-  }, []);
-
- 
   return (
     <AuthWrapper>
       <>
@@ -93,8 +51,9 @@ export default function Home() {
         </div>
         {/* start */}
         <div className=" flex flex-col">
-        <Listing />
+        {/* <Listing /> */}
         </div>
+        <Orders />
       </div>
       
       </div>
