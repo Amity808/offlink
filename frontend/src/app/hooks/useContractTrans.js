@@ -7,7 +7,7 @@ export const useContractTrans = (amount) => {
     const gasLimit = BigNumber.from(1000000)
 
     const { config } = usePrepareContractWrite({
-        address: ERC20.addres,
+        address: ERC20.address,
         abi: ERC20.abi,
         functionName: 'approve',
         args: [offlick.address, amount],

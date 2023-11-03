@@ -87,25 +87,27 @@ useEffect(() => {
 // 5: "0x6890edec61df04d46676a7e9eebde27a2d7a8fd5fd0bdc4dd1bb131084b08063651e25506965b3d3e9f5cd03f6cf5a2339adeef12c389853818a347964277bab1c"
 
   const [ deBounceNonce ] = useDebounce(blockData?.[0], 500) 
-  const [ deBounceTokenAmount ] = useDebounce(depositAmount, 500) 
+  const [ deBounceTokenAmount ] = useDebounce(blockData?.[1], 500) 
   const [ deBounceCurrencyAmount ] = useDebounce(blockData?.[2], 500) 
   // currency type eg Naira
   const [ deBounceCurrenyByte ] = useDebounce(blockData?.[3], 500) 
   const [ deBounceCurrencyTokenAdd ] = useDebounce(blockData?.[4], 500) 
-  const [ deBounceSignature ] = useDebounce(blockData?.[3], 500) 
+  const [ deBounceSignature ] = useDebounce(blockData?.[5], 500) 
 
-  console.log(blockData?.[0])
+  console.log("Block",blockData?.[1])
 
   // convert the token to ethers
   const convertToken = parseEther(
-    deBounceTokenAmount.toString() || "1"
+    depositAmount.toString() || "1"
   )
+  console.log("Token",convertToken);
+  console.log("debounc",deBounceTokenAmount);
   
-  const { writeAsync: approve } = useContractTrans(convertToken)
+  const { writeAsync: approve } = useContractTrans(depositAmount.toString() || "1")
 
   const { writeAsync: placeNewOrder} = useContractSendWrite("placeSellOrder", [
     deBounceNonce,
-    convertToken,
+    depositAmount,
     deBounceCurrencyAmount,
     deBounceCurrenyByte,
     deBounceCurrencyTokenAdd,
@@ -113,20 +115,19 @@ useEffect(() => {
   ])
 
   const handlePlaceOrder = async () => {
+    if(!approve) {
+      throw ("Failed to place order")
+    }
+    const approveTx = await approve()
+
+    await approveTx.wait()
+
     if(!record) throw "Failed to confirm order"
     setLoading("Placing Order");
 
     const transactTx = await placeNewOrder();
     setLoading("Waiting for confirmation")
     await transactTx.wait();
-
-    if(!approve) {
-      throw ("Failed to place order")
-    }
-    const approveTx = await approve()
-
-    await approveTx
-    
   }
 
   const transferToken = async () => {
