@@ -21,7 +21,7 @@ const OrderItem = ({ id }) => {
   const { writeAsync: releaseFunds } = useContractSendWrite("releaseFunds", [
       Number(id),
     ]);
-    const { writeAsync: approve } = useContractTrans(orderItem?.token.toString() || "1")
+    const { writeAsync: approve } = useContractTrans(orderItem?.amountInToken.toString() || "1")
 
   const handleAccept = async () => {
     if(!approve) throw "Failed to approve spending"
