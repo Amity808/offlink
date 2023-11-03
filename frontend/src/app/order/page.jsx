@@ -114,8 +114,6 @@ useEffect(() => {
     const transactTx = await placeNewOrder();
     setLoading("Waiting for confirmation")
     await transactTx.wait();
-
-
     
   }
 
