@@ -12,6 +12,7 @@ import Listing from "./components/Listing";
 import { InjectedConnector } from "wagmi/connectors/injected"
 import Navbar from "./components/Navbar";
 import { io } from "socket.io-client";
+import AuthWrapper from "./http/AuthWraper";
 import WebSocket from 'ws';
 
 
@@ -64,7 +65,8 @@ export default function Home() {
 
  
   return (
-    <>
+    <AuthWrapper>
+      <>
       <div className="flex justify-between items-center h-[10vh] font-bold space-x-2 w-30 px-16 ">
         <Navbar />
       </div>
@@ -97,5 +99,6 @@ export default function Home() {
       
       </div>
     </>
+    </AuthWrapper>
   );
 }

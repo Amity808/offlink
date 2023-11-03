@@ -9,8 +9,12 @@ import { useAccount } from "wagmi";
 import { userOrder } from "../http/offlickdata";
 import { nairapricefeed } from "../http/offlickdata";
 import { useContractSendWrite } from "../hooks/useContractWrite";
+import AuthWrapper from "../http/AuthWraper";
 import { useContractCall } from "../hooks/useContractRead";
+import { useContractTrans } from "../hooks/useContractTrans";
 import api from "../http/axiosfetch"
+import { ethers } from "ethers";
+import { parseEther } from "ethers/lib/utils";
 const PlaceOrder = () => {
   const { address } = useAccount()
   const [nairaRate, setNairaRate] = useState()
@@ -18,6 +22,8 @@ const PlaceOrder = () => {
   // const [cryptocurrency, setCryptocurrency] = useState("");
   const [fiatCurrency, setFiatCurrency] = useState("");
   const [signature, setSignature] = useState("")
+  const [blockData, setblockData] = useState()
+  const [loading, setLoading] = useState("")
   const [conversionRate, setConversionRate] = useState(0)
   // const tokenAddress = '0x874069fa1eb16d44d622f2e0ca25eea172369bc1'
 
@@ -37,25 +43,18 @@ useEffect(() => {
 
   const coinValue = nairaRate * depositAmount
   
+  const { data } = useContractCall("_ordersCount", [], true)
+  const orderlen = Number(data.toString()) 
+  console.log(orderlen)
   console.log(`Naira ${coinValue}`)
-  const orderData = { token_amount: depositAmount, 
+  const orderData = { 
+    nonce: orderlen,
+    token_amount: depositAmount, 
     cryptocurrency: address,
     fiat_currency: fiatCurrency,
     fiat_amount: coinValue
   }
 
-  const { data } = useContractCall("MANAGER_ROLE", [], true)
-
-  // const orderlen = Number(data.toString()) 
-
-  console.log(data)
-  // uint256 nonce,
-  //       uint256 amountInToken,
-  //       uint256 amountInCurrency,
-  //       bytes32 currency,
-  //       address token,
-  //       bytes memory signature
-  const [ deBounceAmount ] = useDebounce(depositAmount, 500)
 
   const token = localStorage.getItem('bih')
   
@@ -63,18 +62,68 @@ useEffect(() => {
     e.preventDefault();
     try {
       const placeUserOrder = await userOrder(orderData, token)
-      // const res = placeUserOrder;
+      const res = await placeUserOrder.data.signedTransaction;
       console.log(placeUserOrder)
+      console.log(res);
+      setblockData(res)
       if(placeUserOrder) {
         toast.success("Order Successfully placed. Waiting for Trader")
       }
+      
     } catch (err) {
       console.log(err)
     }
   }
+//   0: 4
+// 1: 1
+// 2: 788
+// 3: "0x4e49470000000000000000000000000000000000000000000000000000000000"
+// 4: "0xaa7311851643FC4033dfC94D6D82a226cB2579cE"
+// 5: "0x6890edec61df04d46676a7e9eebde27a2d7a8fd5fd0bdc4dd1bb131084b08063651e25506965b3d3e9f5cd03f6cf5a2339adeef12c389853818a347964277bab1c"
+
+  const [ deBounceNonce ] = useDebounce(blockData?.[0], 500) 
+  const [ deBounceTokenAmount ] = useDebounce(blockData?.[1], 500) 
+  const [ deBounceCurrencyAmount ] = useDebounce(blockData?.[2], 500) 
+  // currency type eg Naira
+  const [ deBounceCurrenyByte ] = useDebounce(blockData?.[3], 500) 
+  const [ deBounceCurrencyTokenAdd ] = useDebounce(blockData?.[4], 500) 
+  const [ deBounceSignature ] = useDebounce(blockData?.[3], 500) 
+
+  console.log(blockData?.[0])
+
+  // convert the token to ethers
+  const convertToken = parseEther(
+    deBounceTokenAmount.toString() || "0"
+  )
+  
+  const { writeAsync: approve } = useContractTrans(convertToken)
+
+  const { writeAsync: placeNewOrder} = useContractSendWrite("placeSellOrder", [
+    deBounceNonce,
+    convertToken,
+    deBounceCurrencyAmount,
+    deBounceCurrenyByte,
+    deBounceCurrencyTokenAdd,
+    deBounceSignature
+  ])
+
+  const handlePlaceOrder = async () => {
+    if(!record) throw "Failed to confirm order"
+    setLoading("Placing Order");
+
+    const transactTx = await placeNewOrder();
+    setLoading("Waiting for confirmation")
+    await transactTx.wait();
+
+
+    
+  }
+
+  
 
   return (
-    <div>
+   <AuthWrapper>
+     <div>
       <Navbar />
       <div className=" flex flex-col justify-center items-center">
         <Image src={ladyjpeg} className=" w-[100px] h-[100px] rounded-full" />
@@ -103,7 +152,7 @@ useEffect(() => {
                 htmlFor=""
                 className=" font-semibold text-[18px] mb-[10px]"
               >
-                Crypto Currency
+                Currency
               </label>
               <input
                 type="text"
@@ -119,6 +168,7 @@ useEffect(() => {
         </form>
       </div>
     </div>
+   </AuthWrapper>
   );
 };
 

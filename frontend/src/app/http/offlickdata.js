@@ -12,7 +12,8 @@ export const userOrder = async (orderData, token) => {
         })
 
         const result = await newOrder;
-        console.log(result)
+        console.log(result.data)
+        return result
         toast.success("Order Successfully placed. Waiting for Trader")
     } catch (err) {
         console.log(err.message);
