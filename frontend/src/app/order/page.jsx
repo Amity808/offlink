@@ -194,8 +194,11 @@ useEffect(() => {
             Convert
           </button>
         </form>
-        <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold" onClick={transferToken} disabled={!blockData}>
+        <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold" onClick={transferToken}>
             Convert
+          </button>
+        <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold" onClick={approve} disabled={!blockData}>
+            FUnd
           </button>
       </div>
     </div>
