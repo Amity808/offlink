@@ -15,6 +15,9 @@ import { useContractTrans } from "../hooks/useContractTrans";
 import api from "../http/axiosfetch"
 import { ethers } from "ethers";
 import { parseEther } from "ethers/lib/utils";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+
+
 const PlaceOrder = () => {
   const { address } = useAccount()
   const [nairaRate, setNairaRate] = useState()
@@ -25,7 +28,9 @@ const PlaceOrder = () => {
   const [blockData, setblockData] = useState()
   const [loading, setLoading] = useState("")
   const [conversionRate, setConversionRate] = useState(0)
-  // const tokenAddress = '0x874069fa1eb16d44d622f2e0ca25eea172369bc1'
+  const tokenAddress = '0x874069fa1eb16d44d622f2e0ca25eea172369bc1'
+
+  const { openConnectModal } = useConnectModal()
 
 useEffect(() => {
     const curencData = async () => {
@@ -50,7 +55,7 @@ useEffect(() => {
   const orderData = { 
     nonce: orderlen,
     token_amount: depositAmount, 
-    cryptocurrency: address,
+    cryptocurrency: tokenAddress,
     fiat_currency: fiatCurrency,
     fiat_amount: coinValue
   }
@@ -82,7 +87,7 @@ useEffect(() => {
 // 5: "0x6890edec61df04d46676a7e9eebde27a2d7a8fd5fd0bdc4dd1bb131084b08063651e25506965b3d3e9f5cd03f6cf5a2339adeef12c389853818a347964277bab1c"
 
   const [ deBounceNonce ] = useDebounce(blockData?.[0], 500) 
-  const [ deBounceTokenAmount ] = useDebounce(blockData?.[1], 500) 
+  const [ deBounceTokenAmount ] = useDebounce(depositAmount, 500) 
   const [ deBounceCurrencyAmount ] = useDebounce(blockData?.[2], 500) 
   // currency type eg Naira
   const [ deBounceCurrenyByte ] = useDebounce(blockData?.[3], 500) 
@@ -93,7 +98,7 @@ useEffect(() => {
 
   // convert the token to ethers
   const convertToken = parseEther(
-    deBounceTokenAmount.toString() || "0"
+    deBounceTokenAmount.toString() || "1"
   )
   
   const { writeAsync: approve } = useContractTrans(convertToken)
@@ -114,9 +119,33 @@ useEffect(() => {
     const transactTx = await placeNewOrder();
     setLoading("Waiting for confirmation")
     await transactTx.wait();
+
+    if(!approve) {
+      throw ("Failed to place order")
+    }
+    const approveTx = await approve()
+
+    await approveTx
     
   }
 
+  const transferToken = async () => {
+    setLoading("Approving ....")
+    try {
+      if(!address && openConnectModal) {
+        openConnectModal();
+        return;
+      }
+
+      await toast.promise(handlePlaceOrder(), {
+        pending: "Awaiting transaction",
+        success: "Seccessful payment",
+        error: "Error with payment"
+      })
+    } catch (err) {
+      console.log({ err })
+    }
+  }
   
 
   return (
@@ -164,6 +193,9 @@ useEffect(() => {
             Convert
           </button>
         </form>
+        <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold" onClick={transferToken} disabled={!blockData}>
+            Convert
+          </button>
       </div>
     </div>
    </AuthWrapper>
