@@ -4,6 +4,7 @@ import Image from "next/image";
 import logo2 from "../../../public/img/offlinkLogo.png";
 import Link from "next/link";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { identiconTemplate } from "./helper";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const token = localStorage.getItem("bih");
@@ -21,13 +22,13 @@ const Navbar = () => {
           </div>
         </Link>
         <div className="hidden sm:flex cursor-pointer gap-3 mt-[30px]">
-          <h3 className="text-[#282e82] text-base font-normal leading-none">
+          <h3 className="text-black text-lg leading-none font-medium">
             <Link href="/">Home</Link>
           </h3>
-          <h3 className="text-[#282e82] text-base font-normal leading-none">
+          <h3 className="text-black text-lg leading-none font-medium">
             <Link href="/order">Order</Link>
           </h3>
-          <h3 className="text-[#282e82] text-base font-normal leading-none">
+          <h3 className="text-black text-lg leading-none font-medium">
             <Link href="/profile">Profile</Link>
           </h3>
         </div>
@@ -45,7 +46,7 @@ const Navbar = () => {
 
       {isOpen && (
         <div
-          className="fixed z-20 top-0 bg-[#282e82] 
+          className="fixed z-20 top-0 bg-[#0087FF] 
          right-0 bottom-0 left-0 flex flex-col 
          items-center gap-6 justify-center"
         >
