@@ -17,21 +17,22 @@ const OrderItem = ({ id }) => {
 
   const [orderItem, setOrderItem] = useState(null);
   const { data: _orders } = useContractCall("_orders", [id], true);
-  
+
   const { writeAsync: releaseFunds } = useContractSendWrite("releaseFunds", [
-      Number(id),
-    ]);
+    Number(id),
+  ]);
   const { writeAsync: cancelOrder } = useContractSendWrite("cancelOrder", [
-      Number(id),
-    ]);
-    const { writeAsync: approve } = useContractTrans(orderItem?.amountInToken.toString() || "1")
+    Number(id),
+  ]);
+  const { writeAsync: approve } = useContractTrans(
+    orderItem?.amountInToken.toString() || "1"
+  );
 
   const handleAccept = async () => {
+    if (!approve) throw "Failed to approve spending";
 
-    if(!approve) throw "Failed to approve spending"
-
-    const approveTx = await approve()
-    await approveTx
+    const approveTx = await approve();
+    await approveTx;
 
     if (!releaseFunds) throw "Failed to accept order";
     const takeOrder = await releaseFunds();
@@ -41,9 +42,24 @@ const OrderItem = ({ id }) => {
   const handleCancelOrder = async () => {
     if (!cancelOrder) throw "Failed to cancel order";
     const cancelTx = await cancelOrder();
-  }
+  };
 
-  
+  const ordercancle = async () => {
+    try {
+      if (!address && openConnectModal) {
+        openConnectModal();
+        return;
+      }
+      await toast.promise(handleCancelOrder(), {
+        pending: "Waiting for confirmation",
+        success: "Successfully cancel",
+        error: "Kindly right again later",
+      });
+    } catch (err) {
+      console.log(err?.message);
+      toast.error(err?.message);
+    }
+  };
 
   const releaseFundsQuece = async () => {
     try {
@@ -86,21 +102,31 @@ const OrderItem = ({ id }) => {
     orderItem?.amountInToken.toString()
   );
 
-
   //   accept order
 
   return (
     <div className="">
       {address == orderItem?.seller ? (
         <>
-          <div className=" w-[402px] h-[270px] bg-[#D9D9D9] rounded-lg flex flex-col">
-            <div className=" flex justify-between px-4 items-center mt-[32px]">
+          <div className=" w-[402px] h-[280px] bg-[#D9D9D9] rounded-lg flex flex-col max-sm:w-[350px]">
+            <div className=" flex justify-between px-4 items-center mt-[15px]">
               {/* <Image src={ladyjpng} width={24} height={24} className=' rounded-full w-[60px] h-[60px]' /> */}
               {identiconTemplate(orderItem.seller, 12)}
-              
-              {orderItem.txStatus == 0 ? <p>Pending</p> : 
-              orderItem.txStatus == 1 ? <button className=' rounded-lg w-[100px] h-[44px] border-black border' onClick={releaseFundsQuece}>Approved</button>
-               : orderItem.txStatus == 2 ? <p>Order Cancel</p> : <p>Order Completed</p>}
+
+              {orderItem.txStatus == 0 ? (
+                <p>Pending</p>
+              ) : orderItem.txStatus == 1 ? (
+                <button
+                  className=" rounded-lg p-2 border-black border"
+                  onClick={releaseFundsQuece}
+                >
+                  Approved
+                </button>
+              ) : orderItem.txStatus == 2 ? (
+                <p>Order Cancel</p>
+              ) : (
+                <p>Order Completed</p>
+              )}
             </div>
             <span className=" mb-[12px] mt-[22px] ml-[25px] text-lg font-semibold">
               <p>Address</p>
@@ -116,16 +142,25 @@ const OrderItem = ({ id }) => {
               </span>
             </div>
             <div className=" ml-[28px] text-base font-medium  mt-2">
-              <p>Bank Name:</p>
-              <p>Bank Address: </p>
+              <p className=" text-sm">Do you want to cancel your order?</p>
+              <span className=" flex justify-end mr-2">
+                {orderItem?.txStatus == 1 ? <button
+                  className=" rounded-lg p-2 border-black border "
+                  onClick={ordercancle}
+                >
+                  Cancel
+                </button> : <button
+                  className=" rounded-lg p-2 border-black border "
+                >
+                  Wait
+                </button> }
+              </span>
             </div>
           </div>
         </>
-      ) : 
-        <>
-            
-        </>
-      }
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

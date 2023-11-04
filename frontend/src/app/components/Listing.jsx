@@ -50,7 +50,7 @@ const acceptOrderQuece = async () => {
   const fetchUserData = async () => {
     const data = await getProfile();
     
-    const res = await data.data
+    const res = await data?.data
     console.log(res)
     setDatafetch(res)
 
