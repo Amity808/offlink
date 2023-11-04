@@ -205,7 +205,7 @@ useEffect(() => {
           </button>
           </div>}
         
-          <Link href={`/${orderlen}`}>Order</Link>
+          <p>Order Transaction</p>
         {/* <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold" onClick={approve} disabled={!blockData}>
             FUnd
           </button> */}

@@ -9,6 +9,7 @@ import { useContractSendWrite } from '../hooks/useContractWrite';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { toast } from 'react-toastify';
+import { getProfile } from '../http/authentication';
 
 const Listing = ({ id }) => {
 
@@ -44,15 +45,17 @@ const acceptOrderQuece = async () => {
 }
   const [orderItem, setOrderItem] = useState(null);
 
+  const [datafetch, setDatafetch] = useState()
   
-//  txStatus 0
-//  nonce 0
-//  seller 0x9dBa18e9b96b905919cC828C399d313EfD55D800
-//  buyer 0x0000000000000000000000000000000000000000
-//  token 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1
-//  currency 0x4e474e0000000000000000000000000000000000000000000000000000000000
-//  amountInToken 1
-//  amountInCurrency 3500
+  const fetchUserData = async () => {
+    const data = await getProfile();
+    
+    const res = await data.data
+    console.log(res)
+    setDatafetch(res)
+
+  }
+
 
   const getOrdersItem = useCallback(() => {
     if(!_orders) return null;
@@ -70,8 +73,10 @@ const acceptOrderQuece = async () => {
     })
   }, [_orders])
 
+
   useEffect(() => {
     getOrdersItem()
+    fetchUserData()
   }, [getOrdersItem])
 
   if(!orderItem) return null;
@@ -80,17 +85,18 @@ const acceptOrderQuece = async () => {
     orderItem?.amountInToken.toString(),
   )
 
-//   accept order 
 
 
   return (
     <div className=''>
         
-        <div className=' w-[402px] h-[270px] bg-[#D9D9D9] rounded-lg flex flex-col'>
-            <div className=' flex justify-between px-4 items-center mt-[32px]'>
+        <div className=' w-[402px] h-[270px] bg-[#D9D9D9] rounded-lg flex flex-col max-sm:w-[350px]'>
+            <div className=' flex justify-between px-4 items-center mt-[20px]'>
             {/* <Image src={ladyjpng} width={24} height={24} className=' rounded-full w-[60px] h-[60px]' /> */}
             {identiconTemplate(orderItem.seller, 12)}
-            <button className=' rounded-lg w-[100px] h-[44px] border-black border' onClick={acceptOrderQuece}>Accept</button>
+            {orderItem.txStatus == 0 ? <button className=' rounded-lg w-[100px] h-[44px] border-black border' onClick={acceptOrderQuece}>Accept</button> : 
+              orderItem.txStatus == 1 ? <p>Fixed</p>
+               : orderItem.txStatus == 2 ? <p>Order Cancel</p> : <p>Order Completed</p>}
             {/* <button className=' rounded-lg w-[100px] h-[44px] border-black border'>Release Fund</button> */}
             </div>
             <span className=' mb-[12px] mt-[22px] ml-[25px] text-lg font-semibold'>
@@ -104,8 +110,8 @@ const acceptOrderQuece = async () => {
                 </span>
             </div>
             <div className=' ml-[28px] text-base font-medium  mt-2'>
-                <p>Bank Name:</p>
-                <p>Bank Address: </p>
+                <p>Bank Name: {datafetch?.bankName}</p>
+                <p>Bank Address: {datafetch?.bankAccount}</p>
             </div>
         </div>
     </div>

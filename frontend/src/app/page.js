@@ -6,28 +6,41 @@ import logo2 from "../../public/img/offlinkLogo.png";
 import eth from "../../public/img/eth.png";
 import UpdateProfile from "./components/modal/UpdateProfile";
 import eyes from "../../public/img/eyes.svg";
-import { useConnect, useAccount } from "wagmi";
+import {  useAccount, useBalance } from "wagmi";
 import Listing from "./components/Listing";
 import Navbar from "./components/Navbar";
 import { io } from "socket.io-client";
 import AuthWrapper from "./http/AuthWraper";
-import WebSocket from 'ws';
+import { truuncateAddress } from "./components/helper/truncateAddress";
+import ERC20 from "../app/contract/erc20InstacnceAbi.json"
 
 import Orders from "./components/Orders";
 
 export default function Home() {
-
+  const [displayBalance, setDisplayBalance] = useState(false)
   const router = useRouter();
-  const { address } = useAccount()
+  const { address, isConnected } = useAccount()
+  const { data: cUSDBalance } = useBalance({
+    address,
+    token: ERC20.address
+  })
+  
+  useEffect(() => {
+    if (isConnected && cUSDBalance) {
+      setDisplayBalance(true);
+      return;
+    }
+    setDisplayBalance(false);
+  }, [cUSDBalance, isConnected]);
   
 
   
   return (
     <AuthWrapper>
       <>
-      <div className="flex justify-between items-center h-[10vh] font-bold space-x-2 w-30 px-16 ">
+      {/* <div className="flex justify-between items-center h-[10vh] font-bold space-x-2 w-30 px-16 "> */}
         <Navbar />
-      </div>
+      {/* </div> */}
 
       <div className=" flex flex-row justify-center gap-4 max-sm:flex-col">
       <div className=" max-sm:ml-[20px]">
@@ -40,13 +53,13 @@ export default function Home() {
             {/* <Image src={arrowdown} alt="arrowdown" /> */}
           </div>
 
-          <div className="sec2 flex gap-3 w-[400px] lg:w-[400px] md:w-[300px] sm:w-[100px] items-center">
-            <p className="text-xl text-[#0087FF]">17Eth </p>
-            <Image src={eyes} alt="open" />
+          <div className="sec2 flex gap-3 items-center">
+          Balance: {Number(cUSDBalance?.formatted || 0).toFixed(2)} cUSD
+            {/* <Image src={eyes} alt="open" /> */}
           </div>
 
           <div className="sec3 w-[90%] md:w-[50%] lg:w-[25%] ">
-            <p>{address}</p>
+            <p>{truuncateAddress(address)}</p>
           </div>
         </div>
         {/* start */}

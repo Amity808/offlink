@@ -21,11 +21,14 @@ const OrderItem = ({ id }) => {
   const { writeAsync: releaseFunds } = useContractSendWrite("releaseFunds", [
       Number(id),
     ]);
+  const { writeAsync: cancelOrder } = useContractSendWrite("cancelOrder", [
+      Number(id),
+    ]);
     const { writeAsync: approve } = useContractTrans(orderItem?.amountInToken.toString() || "1")
 
   const handleAccept = async () => {
-    if(!approve) throw "Failed to approve spending"
 
+    if(!approve) throw "Failed to approve spending"
 
     const approveTx = await approve()
     await approveTx
@@ -34,6 +37,13 @@ const OrderItem = ({ id }) => {
     const takeOrder = await releaseFunds();
     await takeOrder;
   };
+
+  const handleCancelOrder = async () => {
+    if (!cancelOrder) throw "Failed to cancel order";
+    const cancelTx = await cancelOrder();
+  }
+
+  
 
   const releaseFundsQuece = async () => {
     try {
@@ -87,8 +97,10 @@ const OrderItem = ({ id }) => {
             <div className=" flex justify-between px-4 items-center mt-[32px]">
               {/* <Image src={ladyjpng} width={24} height={24} className=' rounded-full w-[60px] h-[60px]' /> */}
               {identiconTemplate(orderItem.seller, 12)}
-              <button className=' rounded-lg w-[100px] h-[44px] border-black border' onClick={releaseFundsQuece}>Approved</button>
-              {/* <button className=' rounded-lg w-[100px] h-[44px] border-black border'>Release Fund</button> */}
+              
+              {orderItem.txStatus == 0 ? <p>Pending</p> : 
+              orderItem.txStatus == 1 ? <button className=' rounded-lg w-[100px] h-[44px] border-black border' onClick={releaseFundsQuece}>Approved</button>
+               : orderItem.txStatus == 2 ? <p>Order Cancel</p> : <p>Order Completed</p>}
             </div>
             <span className=" mb-[12px] mt-[22px] ml-[25px] text-lg font-semibold">
               <p>Address</p>

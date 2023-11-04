@@ -221,6 +221,7 @@ contract OffLink is AccessControl {
             ),
             "Fee transfer failed"
         );
+        order.txStatus = _TransactionState.COMPLETED;
 
         emit FundsReleased(orderId, order.seller, order.amountInToken);
     }

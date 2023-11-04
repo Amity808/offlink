@@ -707,10 +707,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@rainbow-me/rainbowkit@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.npmjs.org/@rainbow-me/rainbowkit/-/rainbowkit-1.1.3.tgz"
-  integrity sha512-sgklyUmKFFholbRxjbnkQwzlC0wsP0GnCKl6d+4qTpBbQK3P2kfCM9AcDWdkTv3XVQ40fByE8mc3jJ+rI8JdIw==
+"@rainbow-me/rainbowkit@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-1.2.0.tgz#8ddcb3acef5408ef375e3df349429144aa230e12"
+  integrity sha512-XjdeX31GwFdRR/1rCRqPXiO94nbq2qOlnaox5P4K/KMRIUwyelKzak27uWw8Krmor/Hcrd5FisfepGDS0tUfEA==
   dependencies:
     "@vanilla-extract/css" "1.9.1"
     "@vanilla-extract/dynamic" "2.0.2"
@@ -719,6 +719,7 @@
     i18n-js "^4.3.2"
     qrcode "1.5.0"
     react-remove-scroll "2.5.4"
+    ua-parser-js "^1.0.35"
 
 "@rushstack/eslint-patch@^1.3.3":
   version "1.5.1"
@@ -1027,19 +1028,19 @@
 
 "@types/prop-types@*":
   version "15.7.9"
-  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.9.tgz#b6f785caa7ea1fe4414d9df42ee0ab67f23d8a6d"
+  resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.9.tgz"
   integrity sha512-n1yyPsugYNSmHgxDFjicaI2+gCNjsBck8UX9kuofAKlc0h1bL+20oSF72KeNaW2DUlesbEVCFgyV2dPGTiY42g==
 
 "@types/react-blockies@^1.4.3":
   version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@types/react-blockies/-/react-blockies-1.4.3.tgz#7a7dc94f4eed22f5132af964d676cee639ee080f"
+  resolved "https://registry.npmjs.org/@types/react-blockies/-/react-blockies-1.4.3.tgz"
   integrity sha512-TCcV8Li6RNF+9BDO+BFAW6CQjLOSXc8dQGnfvRRyDTiyoq707PmD+pVHBhUsg0baH67GuuADpIJdVvW+vdPx6Q==
   dependencies:
     "@types/react" "*"
 
 "@types/react@*":
   version "18.2.34"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.34.tgz#aed20f19473721ba328feb99d1ec3307ebc1a8dd"
+  resolved "https://registry.npmjs.org/@types/react/-/react-18.2.34.tgz"
   integrity sha512-U6eW/alrRk37FU/MS2RYMjx0Va2JGIVXELTODaTIYgvWGCV4Y4TfTUzG8DdmpDNIT0Xpj/R7GfyHOJJrDttcvg==
   dependencies:
     "@types/prop-types" "*"
@@ -1048,7 +1049,7 @@
 
 "@types/scheduler@*":
   version "0.16.5"
-  resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.5.tgz#4751153abbf8d6199babb345a52e1eb4167d64af"
+  resolved "https://registry.npmjs.org/@types/scheduler/-/scheduler-0.16.5.tgz"
   integrity sha512-s/FPdYRmZR8SjLWGMCuax7r3qCWQw9QKHzXVukAuuIJkXkDRwp+Pu5LMIVFi0Fxbav35WURicYr8u1QsoybnQw==
 
 "@types/trusted-types@^2.0.2":
@@ -2100,6 +2101,11 @@ chokidar@^3.5.3:
   optionalDependencies:
     fsevents "~2.3.2"
 
+classnames@^2.3.1:
+  version "2.3.2"
+  resolved "https://registry.npmjs.org/classnames/-/classnames-2.3.2.tgz"
+  integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
+
 client-only@0.0.1:
   version "0.0.1"
   resolved "https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz"
@@ -2177,6 +2183,11 @@ cors@~2.8.5:
   dependencies:
     object-assign "^4"
     vary "^1"
+
+country-flag-icons@^1.5.4:
+  version "1.5.7"
+  resolved "https://registry.npmjs.org/country-flag-icons/-/country-flag-icons-1.5.7.tgz"
+  integrity sha512-AdvXhMcmSp7nBSkpGfW4qR/luAdRUutJqya9PuwRbsBzuoknThfultbv7Ib6fWsHXC43Es/4QJ8gzQQdBNm75A==
 
 cross-fetch@^3.1.4:
   version "3.1.8"
@@ -3225,6 +3236,13 @@ inherits@2, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, inherits@~2.0.3, 
   resolved "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
+input-format@^0.3.8:
+  version "0.3.8"
+  resolved "https://registry.npmjs.org/input-format/-/input-format-0.3.8.tgz"
+  integrity sha512-tLR0XRig1xIcG1PtIpMd/uoltvkAI62CN9OIbtj4/tEJAkqTCQLNHUZ9N4M46w0dopny7Rlt/lRH5Xzp7e6F+g==
+  dependencies:
+    prop-types "^15.8.1"
+
 internal-slot@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/internal-slot/-/internal-slot-1.0.5.tgz"
@@ -3615,6 +3633,11 @@ levn@^0.4.1:
   dependencies:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
+
+libphonenumber-js@^1.10.48:
+  version "1.10.49"
+  resolved "https://registry.npmjs.org/libphonenumber-js/-/libphonenumber-js-1.10.49.tgz"
+  integrity sha512-gvLtyC3tIuqfPzjvYLH9BmVdqzGDiSi4VjtWe2fAgSdBf0yt8yPmbNnRIHNbR5IdtVkm0ayGuzwQKTWmU0hdjQ==
 
 lilconfig@^2.0.5, lilconfig@^2.1.0:
   version "2.1.0"
@@ -4268,7 +4291,7 @@ randombytes@^2.1.0:
 
 react-blockies@^1.4.1:
   version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-blockies/-/react-blockies-1.4.1.tgz#d4f0faf95ac197213a297a370a4d7f77ea3d0b08"
+  resolved "https://registry.npmjs.org/react-blockies/-/react-blockies-1.4.1.tgz"
   integrity sha512-4N015X5oPNnD3xQPsiqolOFzPZSSWyc5mJhJUZShUCHtiGUxVN+1qsWTcglkHMNySux9hUofaispqcw9QkWP5Q==
   dependencies:
     prop-types "^15.5.10"
@@ -4290,6 +4313,17 @@ react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
+
+react-phone-number-input@^3.3.7:
+  version "3.3.7"
+  resolved "https://registry.yarnpkg.com/react-phone-number-input/-/react-phone-number-input-3.3.7.tgz#2925340c0aa260df549d2bf9f91f0d0c67b421ee"
+  integrity sha512-/yusEJl2oJA5rTRtny59pf7T1gg/whmfhdZsgrZaL063KEx6FFnmwTskTJ9yR4lYgzj2GyUjXpnA3O9d+ZTHwA==
+  dependencies:
+    classnames "^2.3.1"
+    country-flag-icons "^1.5.4"
+    input-format "^0.3.8"
+    libphonenumber-js "^1.10.48"
+    prop-types "^15.8.1"
 
 react-remove-scroll-bar@^2.3.3:
   version "2.3.4"
@@ -4969,6 +5003,11 @@ typedarray-to-buffer@3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
+ua-parser-js@^1.0.35:
+  version "1.0.37"
+  resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-1.0.37.tgz"
+  integrity sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==
+
 uint8arrays@^3.0.0, uint8arrays@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npmjs.org/uint8arrays/-/uint8arrays-3.1.1.tgz"
@@ -5075,10 +5114,10 @@ vary@^1:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-viem@^1.0.0, viem@^1.17.1:
-  version "1.17.1"
-  resolved "https://registry.npmjs.org/viem/-/viem-1.17.1.tgz"
-  integrity sha512-MSbrfntjgIMKPUPdNJ1pnwT1pDfnOzJnKSLqpafw1q+1k6k6M/jxn09g3WbKefIKIok122DcbmviMow+4FqkAg==
+viem@^1.0.0, viem@^1.18.4:
+  version "1.18.4"
+  resolved "https://registry.npmjs.org/viem/-/viem-1.18.4.tgz"
+  integrity sha512-im+y30k+IGT6VtfD/q1V0RX5PaiHPsFTHkKqvTjTqV+ZT8RgJXzOGPXr5E0uPIm2cbJAJp6A9nR9BCHY7BKR2Q==
   dependencies:
     "@adraffy/ens-normalize" "1.9.4"
     "@noble/curves" "1.2.0"
@@ -5091,7 +5130,7 @@ viem@^1.0.0, viem@^1.17.1:
 
 wagmi@^1.4.5:
   version "1.4.5"
-  resolved "https://registry.npmjs.org/wagmi/-/wagmi-1.4.5.tgz"
+  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-1.4.5.tgz#65ccf763e17892871196b6e5b188e29f0b08d3df"
   integrity sha512-Ph62E6cO5n2Z8Z5LTyZrkaNprxTsbC4w0qZJT4OJdXrEELziI8z/b4FO6amVFXdu2rDp/wpvF56e4mhKC8/Kdw==
   dependencies:
     "@tanstack/query-sync-storage-persister" "^4.27.1"

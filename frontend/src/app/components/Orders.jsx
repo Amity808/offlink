@@ -23,7 +23,7 @@ const Orders = () => {
         <div className=' mb-[29px]'>
             <button className=' text-[17.872px] font-medium border-b-4 border-orange-600'>listings</button>
         </div>
-        <div className=" mx-auto max-w-4xl py-5 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className=" mx-auto max-w-4xl py-5 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {getOrderLenght()}
         </div>
