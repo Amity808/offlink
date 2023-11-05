@@ -32,7 +32,7 @@ const Login = () => {
       setPassword("")
     } catch (err) {
       console.log(`Error ${err}`)
-      toast.error("You have not verified your email address. Try again")
+      toast.error(`${err.message && "You have not verified your email address. or Try again"} `)
       
       
     }
