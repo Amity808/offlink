@@ -61,9 +61,13 @@ useEffect(() => {
     fiat_currency: fiatCurrency,
     fiat_amount: coinValue
   }
+  let token;
 
+  if(typeof window !== "undefined") {
+    token = localStorage.getItem('bih')
 
-  const token = localStorage.getItem('bih')
+  }
+
   
   const handleOrder = async (e) => {
     e.preventDefault();

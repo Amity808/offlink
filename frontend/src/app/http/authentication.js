@@ -1,9 +1,13 @@
-
-'use client'
 import api from "./axiosfetch"
 import { toast } from "react-toastify"
+
 // import { useclient}
 // const userToken = localStorage.getItem('bih')
+let userToken
+if(typeof window !== "undefined") {
+    userToken = localStorage.getItem('bih')
+
+  }
 
 export const sendEmailVerifcation = async (userEmail) => {
     
@@ -37,7 +41,6 @@ export const loginUser = async (loginData) => {
 }
 
 export const getProfile = async () => {
-    const userToken = localStorage.getItem('bih')
         try {
             const response = api.get("/auth/user-profile", 
             {
@@ -56,7 +59,6 @@ export const getProfile = async () => {
     
 }
 export const newProfileUpdate = async (profileData) => {
-    const userToken = localStorage.getItem('bih')
         try {
             const response = api.put("/auth/user-profile", profileData, 
             {

@@ -6,8 +6,8 @@ import UpdateProfile from "../components/modal/UpdateProfile";
 import AuthWrapper from "../http/AuthWraper";
 import { getProfile } from "../http/authentication";
 const UpdateProfiles = () => {
-  // const token = localStorage.getItem('bih')
   const [datafetch, setDatafetch] = useState()
+  const [dataToken, setDataToken] = useState('')
   
   const fetchUserData = async () => {
     const data = await getProfile();
@@ -15,11 +15,14 @@ const UpdateProfiles = () => {
     const res = await data?.data
     console.log(res)
     setDatafetch(res)
-
+    
   }
   useEffect (() => {
+    const token = localStorage.getItem('bih')
+    setDataToken(token)
   fetchUserData()
   },[])
+  console.log(dataToken)
   console.log(datafetch)
   return (
     <>
