@@ -26,7 +26,7 @@ const Navbar = () => {
             <Link href="/">Home</Link>
           </h3>
           <h3 className="text-black text-lg leading-none font-medium">
-            <Link href="/order">Order</Link>
+            <Link href={"/order"}>Order</Link>
           </h3>
           <h3 className="text-black text-lg leading-none font-medium">
             <Link href="/profile">My Profile</Link>

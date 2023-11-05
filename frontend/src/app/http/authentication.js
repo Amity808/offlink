@@ -36,7 +36,7 @@ export const loginUser = async (loginData) => {
         return result;
         
     } catch (error) {
-        
+        console.log(error)
     }
 }
 

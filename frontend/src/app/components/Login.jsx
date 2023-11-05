@@ -8,10 +8,12 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
+
 const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -21,16 +23,17 @@ const Login = () => {
     try {
       const response = api.post("/auth/login", loginData)
       const result = await response;
-
+      console.log(result)
       console.log(result.data.accessToken)
       localStorage.setItem("bih", result.data.accessToken)
+      toast.success("Logged In")
       router.push("/")
       setEmail("")
       setPassword("")
     } catch (err) {
-      console.log(`Error ${err.message}`)
-      toast.error(err?.message)
-      // to
+      console.log(`Error ${err}`)
+      toast.error("You have not verified your email address. Try again")
+      
       
     }
     
