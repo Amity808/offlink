@@ -6,7 +6,7 @@ import api from "../http/axiosfetch";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-
+import { toast } from "react-toastify";
 import Link from "next/link";
 
 const Login = () => {
@@ -30,6 +30,8 @@ const Login = () => {
       setPassword("")
     } catch (err) {
       console.log(`Error ${err.message}`)
+      toast.error(err?.message)
+      // to
       
     }
     
