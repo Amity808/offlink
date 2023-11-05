@@ -59,7 +59,7 @@ socket.addEventListener('error', (event) => {
     }
 
     connectorWs()
-  }, []);
+  }, [connect, router]);
 
   return children;
 };

@@ -138,7 +138,7 @@ const OrderItem = ({ id }) => {
               </p>
               <span className=" flex flex-row gap-2 mr-5 justify-center items-start">
                 <p>NIG</p>
-                <Image src={flag} width={24} height={24} className="" />
+                <Image src={flag} width={24} alt="flag" height={24} className="" />
               </span>
             </div>
             <div className=" ml-[28px] text-base font-medium  mt-2">

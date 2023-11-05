@@ -51,7 +51,7 @@ const Login = () => {
            w-full lg:flex lg:items-center lg:justify-center md:flex
             md:items-center md:justify-center "
           >
-            <img src="/img/Group1.png" alt="logo img" />
+            {/* <img src="/img/Group1.png" alt="logo img" /> */}
             <h1 class="logo-txt md:text-3xl lg:text-4xl flex items-center">
               OFF LINK{" "}
             </h1>

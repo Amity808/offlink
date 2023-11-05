@@ -197,7 +197,7 @@ useEffect(() => {
         </form>
         </div>): <div className=" flex justify-center items-center flex-col">
           <span className="">
-            <Image src={newSVg} className=" w-[200px] h-[200px] mt-[40px]" />
+            <Image src={newSVg} alt="new" className=" w-[200px] h-[200px] mt-[40px]" />
           </span>
 
           <button className=" w-[360px] h-[60px] bg-[#0087FF] rounded-lg mt-[40px] text-lg font-semibold text-white" onClick={transferToken}>
