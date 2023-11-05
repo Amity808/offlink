@@ -64,10 +64,11 @@ contract OffLink is AccessControl {
         address token,
         bytes32 currency,
         uint256 amountInToken,
-        uint256 amountInCurrency
+        uint256 amountInCurrency,
+        bytes signature
     );
 
-    event OrderAccepted(uint256 indexed orderId, address buyer);
+    event OrderAccepted(uint256 indexed orderId, address buyer, uint256 buyerRef);
 
     event FundsReleased(
         uint256 indexed orderId,
@@ -180,13 +181,14 @@ contract OffLink is AccessControl {
             token,
             currency,
             amountInToken,
-            amountInCurrency
+            amountInCurrency,
+            signature
         );
 
         _ordersCount++;
     }
 
-    function acceptOrder(uint256 orderId) external onlyRole(BUYER_ROLE) {
+    function acceptOrder(uint256 orderId, uint256 buyerRef) external onlyRole(BUYER_ROLE) {
         Order storage order = _orders[orderId];
         require(
             order.txStatus == _TransactionState.PENDING,
@@ -195,7 +197,7 @@ contract OffLink is AccessControl {
         order.buyer = msg.sender;
         order.txStatus = _TransactionState.ACCEPTED;
 
-        emit OrderAccepted(orderId, msg.sender);
+        emit OrderAccepted(orderId, msg.sender, buyerRef);
     }
 
     function _calculateFee(uint256 amount) internal view returns (uint256) {
@@ -221,7 +223,6 @@ contract OffLink is AccessControl {
             ),
             "Fee transfer failed"
         );
-        order.txStatus = _TransactionState.COMPLETED;
 
         emit FundsReleased(orderId, order.seller, order.amountInToken);
     }
@@ -261,10 +262,6 @@ contract OffLink is AccessControl {
 
     function cancelOrder(uint256 orderId) external onlySeller(orderId) {
         Order storage order = _orders[orderId];
-        require(
-            order.txStatus == _TransactionState.ACCEPTED,
-            "order is not accepted"
-        );
         require(
             IERC20(order.token).transfer(order.seller, order.amountInToken),
             "Token refund to buyer failed"
