@@ -107,7 +107,7 @@ const Login = () => {
 
             <div class="dont flex  w-full h-8 items-center font-medium">
               {" "}
-              <div>Don't have an account</div> &nbsp;
+              <div>Don&apos;t have an account</div> &nbsp;
               <div class="res cursor-pointer my-2">
                 <Link href="/signup">SignUp</Link>
               </div>
