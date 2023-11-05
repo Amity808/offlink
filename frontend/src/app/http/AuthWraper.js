@@ -58,8 +58,8 @@ socket.addEventListener('error', (event) => {
       connect();
     }
 
-    connectorWs()
-  }, [connect, router]);
+    // connectorWs()
+  }, [router]);
 
   return children;
 };
