@@ -51,7 +51,7 @@ useEffect(() => {
   const coinValue = nairaRate * depositAmount
   
   const { data } = useContractCall("_ordersCount", [], true)
-  const orderlen = Number(data.toString()) 
+  const orderlen = Number(data?.toString()) 
   console.log(orderlen)
   console.log(`Naira ${coinValue}`)
   const orderData = { 
