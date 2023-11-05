@@ -1,11 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaApple } from "react-icons/fa";
 import "../components/login.css";
 import api from "../http/axiosfetch";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+
 import Link from "next/link";
 
 const Login = () => {

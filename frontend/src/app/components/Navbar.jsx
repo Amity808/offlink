@@ -7,7 +7,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import { identiconTemplate } from "./helper";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const token = localStorage.getItem("bih");
+  
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
