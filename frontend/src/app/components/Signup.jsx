@@ -40,7 +40,7 @@ const Signup = () => {
       toast.success(result.data.message);
       router.push("/");
     } catch (error) {
-      toast.error(error?.message);
+      // toast.error(error?.message);
       toast.error("User Already register or Network Error, Try again")
       console.log(`Error ${error}`);
     }
