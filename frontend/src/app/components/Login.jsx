@@ -6,7 +6,6 @@ import api from "../http/axiosfetch";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { toast } from "react-toastify";
 import Link from "next/link";
 
 const Login = () => {
