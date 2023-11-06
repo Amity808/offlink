@@ -20,7 +20,7 @@ const Orders = () => {
     }
   return (
     <div>
-        <div className=' mb-[10px]'>
+        <div className=' mb-[5px]'>
             <h2 className=' text-5xl font-bold mt-10'>Listings</h2>
         </div>
         <div className=" mx-auto max-w-4xl py-2 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-3">
