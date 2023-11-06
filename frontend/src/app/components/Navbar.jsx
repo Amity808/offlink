@@ -13,7 +13,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="pt-4 container mx-auto px-8 ">
+    <header className="pt-4 container mx-auto px-8 mb-16">
       <nav className=" flex justify-between items-center">
         <Link href="/">
           <div className=" cursor-pointer flex flex-row justify-center items-center gap-2">

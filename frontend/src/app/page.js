@@ -47,24 +47,17 @@ export default function Home() {
         <div
           className=" max-sm:mr-4  flex flex-col gap-4 justify-around"
         >
-          <div class=" justify-center flex gap-3 bg-[#E8E8E8] w-[200px] max   items-center rounded-md">
+          <div className=" flex gap-3 justify-center bg-[#E8E8E8] w-[250px]   items-center rounded-md py-3">
             <Image src={eth} alt="eth" className="" />
-            <div className="text-xl   ">Celo cUSD</div>
-            {/* <Image src={arrowdown} alt="arrowdown" /> */}
+            <div className="text-xl pr-1">{truuncateAddress(address)}</div>
           </div>
 
           <div className="sec2 flex gap-3 items-center">
           Balance: {Number(cUSDBalance?.formatted || 0).toFixed(2)} cUSD
             {/* <Image src={eyes} alt="open" /> */}
           </div>
-
-          <div className="sec3 w-[90%] md:w-[50%] lg:w-[25%] ">
-            <p>{truuncateAddress(address)}</p>
-          </div>
         </div>
-        {/* start */}
         <div className=" flex flex-col">
-        {/* <Listing /> */}
         </div>
         <Orders />
       </div>
