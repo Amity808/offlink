@@ -10,6 +10,7 @@ import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { toast } from 'react-toastify';
 import { getProfile } from '../http/authentication';
+import { truuncateAddress } from "../components/helper/truncateAddress";
 
 const Listing = ({ id }) => {
 
@@ -100,7 +101,7 @@ const acceptOrderQuece = async () => {
             {/* <button className=' rounded-lg w-[100px] h-[44px] border-black border'>Release Fund</button> */}
             </div>
             <span className=' mb-[12px] mt-[22px] ml-[25px] text-lg font-semibold'>
-                <p>Address</p>
+                <p>{truuncateAddress(orderItem?.seller)}</p>
             </span>
             <div className=' flex ml-[28px] gap-4'>
                 <p>wants to swap {amountTOken} cUSD for {orderItem.amountInCurrency}</p>

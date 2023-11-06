@@ -13,7 +13,6 @@ import { io } from "socket.io-client";
 import AuthWrapper from "./http/AuthWraper";
 import { truuncateAddress } from "./components/helper/truncateAddress";
 import ERC20 from "../app/contract/erc20InstacnceAbi.json"
-
 import Orders from "./components/Orders";
 
 export default function Home() {
@@ -38,10 +37,7 @@ export default function Home() {
   return (
     <AuthWrapper>
       <>
-      {/* <div className="flex justify-between items-center h-[10vh] font-bold space-x-2 w-30 px-16 "> */}
         <Navbar />
-      {/* </div> */}
-
       <div className=" flex flex-row justify-center gap-4 max-sm:flex-col">
       <div className=" max-sm:ml-[20px]">
         <div

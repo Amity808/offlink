@@ -20,10 +20,10 @@ const Orders = () => {
     }
   return (
     <div>
-        <div className=' mb-[5px]'>
-            <h2 className=' text-5xl font-bold mt-10'>Listings</h2>
+        <div className='mt-16'>
+            <h2 className=' text-5xl font-bold'>Listings</h2>
         </div>
-        <div className=" mx-auto max-w-4xl py-2 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-3">
+        <div className=" mx-auto max-w-4xl py-2 sm:py-10 sm:px-6 lg:max-w-7xl lg:px-3">
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {getOrderLenght()}
         </div>
